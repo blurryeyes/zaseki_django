@@ -1,0 +1,24 @@
+main {
+    padding: 2rem 0;
+    /* background-color: #eee; */
+}
+
+.welcome {
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    background-color: #eee;
+    /* background-color: #fff; */
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.snippet-date {
+    margin-bottom: 1rem;
+}
+
+.source-code > .highlight {
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+

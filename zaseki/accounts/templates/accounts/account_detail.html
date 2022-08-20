@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block main %}
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>社員番号</th>
+            <td>{{ user.employee_number }}</td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>姓</th>
+            <td>{{ user.last_name }}</td>
+        </tr>
+        <tr>
+            <th>名</th>
+            <td>{{ user.first_name }}</td>
+        </tr>
+    </table>
+    {% url 'account_edit' as account_edit_url %}
+    {% bootstrap_button button_type="link" content="編集" href=account_edit_url %}
+    {% if user.is_superuser %}
+    {% url 'admin:index' as admin_url %}
+    {% bootstrap_button button_type="link" content="管理ページ" href=admin_url target="_blank" %}
+    {% endif %}
+</div>
+{% endblock main %}

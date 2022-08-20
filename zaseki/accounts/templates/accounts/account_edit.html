@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block main %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <table class="table">
+            <tr>
+                <th>社員番号</th>
+                <td>{{ user.employee_number }}</td>
+            </tr>
+            {{ form.as_table }}
+        </table>
+        {% bootstrap_button button_type="submit" content="保存" %}
+    </form>
+</div>
+{% endblock main %}

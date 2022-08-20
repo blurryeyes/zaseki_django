@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block main %}
+<div class="container">
+    <h2>レイアウト詳細</h2>
+    <table class="table">
+        <tr>
+            <th>レイアウト名</th>
+            <td>{{ layout.layout_name }}</td>
+        </tr>
+        <tr>
+            <th>レイアウト横幅(px)</th>
+            <td>{{ layout.layout_width }}</td>
+        </tr>
+        <tr>
+            <th>レイアウト縦幅(px)</th>
+            <td>{{ layout.layout_height }}</td>
+        </tr>
+        <tr>
+            <th>座席横幅(px)</th>
+            <td>{{ layout.seat_width }}</td>
+        </tr>
+        <tr>
+            <th>座席縦幅(px)</th>
+            <td>{{ layout.seat_height }}</td>
+        </tr>
+        <tr>
+            <th>フォントサイズ(px)</th>
+            <td>{{ layout.font_size }}</td>
+        </tr>
+        <tr>
+            <th>不透明度</th>
+            <td>{{ layout.opacity }}</td>
+        </tr>
+        <tr>
+            <th>空席(色)</th>
+            <td><div class="seat non-sitting-seat"></div></td>
+        </tr>
+        <tr>
+            <th>満席(色)</th>
+            <td><div class="seat sitting-seat"></div></td>
+        </tr>
+        <tr>
+            <th>注意事項</th>
+            <td>{{ layout.notice }}</td>
+        </tr>
+        <tr>
+            <th>レイアウト画像</th>
+            <td><a href="/media/{{ layout.image.name }}"><img src="/media/{{ layout.image.name }}" style="width:300px;border:solid 1px black;"></a></td>
+        </tr>
+        <tr>
+            <th>作成日時</th>
+            <td>{{ layout.created_at }}</td>
+        </tr>
+        <tr>
+            <th>更新日時</th>
+            <td>{{ layout.updated_at }}</td>
+        </tr>
+        <tr>
+            <th>作成者</th>
+            <td>{{ layout.created_by }}</td>
+        </tr>
+        <tr>
+            <th>更新者</th>
+            <td>{{ layout.updated_by }}</td>
+        </tr>
+    </table>
+    {% url 'layout_edit' layout.id as layout_edit_url %}
+    {% bootstrap_button button_type="link" content="編集" href=layout_edit_url %}
+    {% if user.is_authenticated %}{% url 'seat_place' layout.id as seat_place_url %}
+    {% bootstrap_button button_class="btn-success" button_type="link" content="座席設置へGO!" href=seat_place_url %}{% endif %}
+</div>
+{% endblock main %}
+{% block style %}
+<style>
+.sitting-seat {
+    background-color:{{ layout.sitting_seat_color }};
+}
+
+.non-sitting-seat {
+    background-color:{{ layout.non_sitting_seat_color }};
+}
+
+.seat {
+    opacity:{{ layout.opacity }};
+    width:{{ layout.seat_width }}px;
+    height:{{ layout.seat_height }}px;
+    border-radius:10%;
+}
+</style>
+{% endblock style %}

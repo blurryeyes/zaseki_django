@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block main %}
+<div class="container">
+    <h2>新規レイアウト作成</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="table">
+            {{ form.as_table }}
+        </table>
+        {% comment %} {% bootstrap_form form %} {% endcomment %}
+        {% bootstrap_button button_type="submit" content="保存" %}
+    </form>
+</div>
+{% endblock main %}

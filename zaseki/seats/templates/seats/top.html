@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="welcome">
+        <h1 class="title">トッポ</h1>
+        <p class="subtitle">{% if user.is_authenticated %}ようこそログイン済み！{% else %}座席を登録する場合はログインしてください。{% endif %}</p>
+        {% comment %} <a class="btn btn-primary" href="{% url 'snippet_new' %}">スニペットを作成する</a> {% endcomment %}
+    </div>
+
+    {% if snippets %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>投稿者</th>
+            <th>投稿日</th>
+            <th>タイトル</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% comment %} {% for snippet in snippets %} {% endcomment %}
+        <tr>
+            {% comment %} <th>{{ snippet.created_by.username }}</th> {% endcomment %}
+            {% comment %} <th>{{ snippet.created_at }}</th> {% endcomment %}
+            {% comment %} <th><a href="{% url 'snippet_detail' snippet.id %}">{{ snippet.title }}</a></th> {% endcomment %}
+        </tr>
+        {% comment %} {% endfor %} {% endcomment %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>座席表がありません。</p>
+    {% endif %}
+    </div>
+{% endblock main %}
+
