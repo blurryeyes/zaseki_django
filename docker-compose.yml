@@ -10,7 +10,6 @@ services:
       - ./zaseki:/zaseki
     working_dir: /zaseki
     command: python manage.py runserver 0.0.0.0:8000
-    restart: always
     depends_on:
       - db
   db:
@@ -24,6 +23,5 @@ services:
       POSTGRES_USER: vagrant
       POSTGRES_PASSWORD: vagrant
       POSTGRES_DB: zaseki_db
-    restart: always
 volumes:
   db-vol:
