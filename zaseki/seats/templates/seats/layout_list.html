@@ -4,7 +4,7 @@
 <div class="container">
     <div class="welcome">
         <h1 class="title">座席表一覧</h1>
-        <p class="subtitle">{% if user.is_authenticated %}ようこそ！{% else %}座席を登録する場合はログインしてください。{% endif %}</p>
+        <p class="subtitle">{% if user.is_authenticated %}ようこそ！{% else %}座席閲覧以外の機能を利用する場合はログインしてください。{% endif %}</p>
     </div>
 
     {% if user.is_authenticated %}<a class="btn btn-primary" href="{% url 'layout_new' %}">新規レイアウト</a>{% endif %}
@@ -24,8 +24,8 @@
         {% for layout in layouts %}
         <tr>
             <td><a class="btn btn-sm btn-primary" href="{% url 'seat_view' layout.id %}">GO!</a></td>
-            <td><a class="btn btn-sm btn-success" href="{% url 'seat_sit' layout.id %}">GO!</a></td>
-            <td><a href="{% url 'layout_detail' layout.id %}">{{ layout.layout_name }}</a></td>
+            <td><a class="btn btn-sm btn-success authenticated-act" href="{% url 'seat_sit' layout.id %}">GO!</a></td>
+            <td><a class="authenticated-act" href="{% url 'layout_detail' layout.id %}">{{ layout.layout_name }}</a></td>
             <td>{{ layout.created_by.get_full_name }}</td>
             <td>{{ layout.created_at }}</td>
             <td>{{ layout.updated_at }}</td>
@@ -38,4 +38,21 @@
     {% endif %}
 </div>
 {% endblock main %}
-
+{% block script %}
+{% if not user.is_authenticated %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(".authenticated-act").click(function() {
+            alert("ログインしてください。");
+        });
+    </script>
+{% endif %}
+{% endblock script %}
