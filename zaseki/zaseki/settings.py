@@ -183,6 +183,7 @@ INSTALLED_APPS = [
     'seats.apps.SeatsConfig',
     # 'seats',
     'django_bootstrap5',
+    'import_export',
 ]
 
 MIDDLEWARE = [
