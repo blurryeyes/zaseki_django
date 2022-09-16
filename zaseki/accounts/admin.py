@@ -1,23 +1,24 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-# from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.hashers import make_password
 from django.utils.translation import ugettext_lazy as _
+from import_export import resources, fields
+from import_export.admin import ImportExportMixin
 
 from .models import User
 from .forms import MyUserChangeAdminForm, MyUserCreationAdminForm
 
-# class MyUserChangeForm(UserChangeForm):
-#     class Meta:
-#         model = User
-#         fields = '__all__'
 
-# class MyUserCreationForm(UserCreationForm):
-#     class Meta:
-#         model = User
-#         # ユーザ登録に必要な項目
-#         fields = ('employee_number', 'email',)
+class UserResource(resources.ModelResource):
+    def before_import_row(self, row, **kwargs):
+        value = row['password']
+        row['password'] = make_password(value)
 
-class MyUserAdmin(UserAdmin):
+    class Meta:
+        model = User
+
+
+class MyUserAdmin(ImportExportMixin, UserAdmin):
     fieldsets = (
         (None, {'fields': ('employee_number', 'password')}),
         (_('Personal info'), {'fields': ('email', 'last_name', 'first_name')}),
@@ -37,5 +38,8 @@ class MyUserAdmin(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     search_fields = ('email', 'last_name', 'first_name')
     ordering = ('employee_number',)
+
+    resource_class = UserResource
+
 
 admin.site.register(User, MyUserAdmin)
