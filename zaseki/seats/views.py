@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -27,6 +27,7 @@ def layout_list(request):
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def layout_new(request):
     # https://qiita.com/j54854/items/1f0560142e39d888251c
     if request.method == 'POST':
@@ -47,6 +48,7 @@ def layout_new(request):
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def layout_edit(request, layout_id):
     layout = get_object_or_404(Layout, pk=layout_id)
     if request.method == 'POST':
@@ -63,7 +65,6 @@ def layout_edit(request, layout_id):
     return render(request, 'seats/layout_edit.html', {'form' : form})
 
 
-@login_required
 def layout_detail(request, layout_id):
     layout = get_object_or_404(Layout, pk=layout_id)
     # TODO:ユーザ2回呼んでる
@@ -72,6 +73,7 @@ def layout_detail(request, layout_id):
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def layout_delete(request, layout_id):
     layout = get_object_or_404(Layout, pk=layout_id)
     try:
@@ -82,6 +84,7 @@ def layout_delete(request, layout_id):
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def seat_place(request, layout_id):
     view_type = 'place'
     logger.info("レイアウトを取得します。")
