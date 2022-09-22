@@ -90,7 +90,7 @@
 <script type="text/javascript">
 {% if user.is_authenticated %}{% if not user.is_staff %}
 $(".staff-act").click(function() {
-    alert('管理者のみが可能です。');
+    alert('スタッフ以上のみが可能です。');
     return false;
 });
 {% elif user.is_staff %}

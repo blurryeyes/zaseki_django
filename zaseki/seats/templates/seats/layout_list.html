@@ -69,7 +69,7 @@ $(".authenticated-act").click(function() {
 });
 {% elif not user.is_staff %}
 $(".staff-act").click(function() {
-    alert("管理者のみが可能です。");
+    alert("スタッフ以上のみが可能です。");
     return false;
 });
 {% endif %}
