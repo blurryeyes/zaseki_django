@@ -9,6 +9,7 @@ urlpatterns = [
     path('layout/new/', views.layout_new, name='layout_new'),
     path('layout/<int:layout_id>/', views.layout_detail, name='layout_detail'),
     path('layout/<int:layout_id>/edit/', views.layout_edit, name='layout_edit'),
+    path('layout/<int:layout_id>/delete/', views.layout_delete, name='layout_delete'),
     path('seat/place/<int:layout_id>/', views.seat_place, name='seat_place'),
     path('seat/sit/<int:layout_id>/', views.seat_sit, name='seat_sit'),
     path('seat/view/<int:layout_id>/', views.seat_view, name='seat_view'),
