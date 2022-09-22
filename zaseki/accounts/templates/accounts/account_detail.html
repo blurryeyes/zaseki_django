@@ -20,6 +20,10 @@
             <th>名</th>
             <td>{{ user.first_name }}</td>
         </tr>
+        <tr>
+            <th>権限</th>
+            <td>{% if user.is_superuser %}管理者{% elif user.is_staff %}スタッフ{% else %}一般{% endif %}</td>
+        </tr>
     </table>
     {% url 'account_edit' as account_edit_url %}
     {% bootstrap_button button_type="link" content="編集" href=account_edit_url %}
