@@ -6,15 +6,27 @@
         <h1 class="title">座席表一覧</h1>
         <p class="subtitle">{% if user.is_authenticated %}ようこそ！{% else %}座席閲覧以外の機能を利用する場合はログインしてください。{% endif %}</p>
     </div>
+    <div class="d-md-flex justify-content-md-end">
+        {% if user.is_authenticated %}<a class="btn btn-success staff-act" href="{% url 'layout_new' %}">新規レイアウト</a>{% endif %}
+    </div>
+    <form class="row g-3">
+        <div class="col-6">
+            <label for="searchTitle" class="form-label">レイアウト名</label>
+            <input id="searchTitle" class="form-control" name="layout_name" value="{{ request.GET.layout_name }}" type="text"/>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">検索</button>
+            <a class="btn btn-secondary" href="{% url 'layout_list' %}">リセット</a>
+        </div>
+    </form>
 
-    {% if user.is_authenticated %}<a class="btn btn-primary staff-act" href="{% url 'layout_new' %}">新規レイアウト</a>{% endif %}
     {% if layouts %}
     <table class="table">
         <thead>
         <tr>
             <th>閲覧</th>
             <th>着席</th>
-            <th>タイトル</th>
+            <th>レイアウト名</th>
             <th>投稿者</th>
             <th>作成日</th>
             <th>更新日</th>

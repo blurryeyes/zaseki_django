@@ -22,6 +22,9 @@ def layout_list(request):
         if not login_user.last_name or not login_user.first_name:
             return redirect('initial_setting')
     layouts = Layout.objects.prefetch_related('created_by').order_by('id').all()
+    layout_name = request.GET.get('layout_name')
+    if layout_name is not None:
+        layouts = layouts.filter(layout_name__contains=layout_name)
     # トップページへ
     return render(request, 'seats/layout_list.html', {"layouts": layouts})
 
