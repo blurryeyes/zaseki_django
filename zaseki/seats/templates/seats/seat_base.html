@@ -8,7 +8,6 @@
             <h2>{{ layout.layout_name }}</h2>
             <p>{% if view_type == 'place' %}座席を設置します。{%elif view_type == 'sit' %}座る座席をクリックしてください。{% elif view_type == 'view' %}閲覧モード{% else %}その他{% endif %}</p>
         </div>
-        {% comment %} <div class="panel"> {% endcomment %}
         <div class="panel">{% csrf_token %}
             <img class="seat-area" src="/media/{{ layout.image.name }}" style="width:{{ layout.layout_width }}px; height:{{ layout.layout_height }}px;">
             {% for seat in seats %}{% for user in seat.user.all %}
@@ -24,7 +23,6 @@
             <div class="remove-area">remove</div>
             {% endif %}
         </div>
-    {% comment %} </div> {% endcomment %}
     </section>
 </div>
 {% endblock main %}

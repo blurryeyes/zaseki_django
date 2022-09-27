@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="welcome">
+        <h1 class="title">利用履歴</h1>
+    </div>
+    <form class="row g-3">
+        <div class="col-6">
+            <label for="searchLastName" class="form-label">姓</label>
+            <input id="searchLastName" class="form-control" name="last_name" value="{{ request.GET.last_name }}" type="text"/>
+        </div>
+        <div class="col-6">
+            <label for="searchFirstName" class="form-label">名</label>
+            <input id="searchFirstName" class="form-control" name="first_name" value="{{ request.GET.first_name }}" type="text"/>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">検索</button>
+            <a class="btn btn-secondary" href="{% url 'usagelog_list' %}">リセット</a>
+        </div>
+    </form>
+    {% if usagelogs %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>レイアウトID</th>
+            <th>ユーザ名</th>
+            <th>座席ID</th>
+            <th>着席日時</th>
+            <th>離席日時</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for usagelog in usagelogs %}
+        <tr>
+            <td>{{ usagelog.layout_id }}</td>
+            <td>{{ usagelog.user.get_full_name }}</td>
+            <td>{{ usagelog.seat_id }}</td>
+            <td>{{ usagelog.sit_datetime }}</td>
+            <td>{{ usagelog.leave_datetime }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>利用履歴がありません。</p>
+    {% endif %}
+</div>
+{% endblock main %}
+{% block script %}
+{% endblock script %}

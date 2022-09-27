@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="welcome">
+        <h1 class="title">ユーザー</h1>
+    </div>
+    <form class="row g-3">
+        <div class="col-6">
+            <label for="searchLastName" class="form-label">姓</label>
+            <input id="searchLastName" class="form-control" name="last_name" value="{{ request.GET.last_name }}" type="text"/>
+        </div>
+        <div class="col-6">
+            <label for="searchFirstName" class="form-label">名</label>
+            <input id="searchFirstName" class="form-control" name="first_name" value="{{ request.GET.first_name }}" type="text"/>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">検索</button>
+            <a class="btn btn-secondary" href="{% url 'user_list' %}">リセット</a>
+        </div>
+    </form>
+    {% if users %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>社員番号</th>
+            <th>名前</th>
+            <th>最終ログイン日時</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.employee_number }}</td>
+            <td>{{ user.get_full_name }}</td>
+            <td>{% if user.last_login is None %}-{% else %}{{ user.last_login }}{% endif %}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>ユーザーが存在しません。</p>
+    {% endif %}
+</div>
+{% endblock main %}
+{% block script %}
+{% endblock script %}

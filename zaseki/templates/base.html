@@ -13,9 +13,15 @@
 <nav class="navbar navbar-expand flex-md-row navbar-dark bg-dark">
     <div class="container justify-content-between">
         <a href="/" class="navbar-brand">座席表</a>
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="{% url 'seat_list' %}">座席検索</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'usage_list' %}">利用状況検索</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'usagelog_list' %}">利用履歴検索</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'user_list' %}">ユーザ検索</a></li>
+        </ul>
         <ul class="navbar-nav mr-md-2">
             {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'account_detail' %}">{{ user.get_full_name }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'user_detail' %}">{{ user.get_full_name }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">ログアウト</a></li>
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">会員登録</a></li>

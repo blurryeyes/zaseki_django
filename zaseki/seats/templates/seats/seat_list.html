@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="welcome">
+        <h1 class="title">座席</h1>
+    </div>
+    <form class="row g-3">
+        <div class="col-6">
+            <label for="searchLayoutName" class="form-label">レイアウト</label>
+            <input id="searchLayoutName" class="form-control" name="layout_name" value="{{ request.GET.layout_name }}" type="text"/>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">検索</button>
+            <a class="btn btn-secondary" href="{% url 'seat_list' %}">リセット</a>
+        </div>
+    </form>
+    {% if seats %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>座席ID</th>
+            <th>レイアウトID</th>
+            <th>X座標</th>
+            <th>Y座標</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for seat in seats %}
+        <tr>
+            <td>{{ seat.id }}</td>
+            <td><a href="{% url 'layout_detail' seat.layout_id %}">{{ seat.layout.layout_name }}</a></td>
+            <td>{{ seat.x_coordinate }}</td>
+            <td>{{ seat.y_coordinate }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>座席がありません。</p>
+    {% endif %}
+</div>
+{% endblock main %}
+{% block script %}
+{% endblock script %}
