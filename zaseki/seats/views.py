@@ -6,7 +6,7 @@ from django.utils import timezone
 import logging
 
 from .forms import LayoutForm
-from .models import Layout, Seat, Usage
+from .models import Layout, Seat, Usage, UsageLog
 
 logger = logging.getLogger('django')
 
@@ -211,22 +211,33 @@ def seat_view(request, layout_id):
 
 
 @login_required
-def color_code(request):
-    view_type = 'sit'
-    layout = get_object_or_404(Layout, pk=5)
-    logger.info(type(layout))
-    layouts = Layout.objects.all()
-    logger.info(type(layouts))
-    # seats = Seat.objects.raw(
-    #     'SELECT "seats_seat"."id", "seats_seat"."x_coordinate", "seats_seat"."y_coordinate", "seats_seat"."is_used", "seats_seat"."layout_id", "seats_seat"."created_at", "seats_seat"."updated_at", "seats_seat"."created_by_id", "seats_seat"."updated_by_id", "accounts_user"."last_name", "accounts_user"."first_name" FROM "seats_seat" LEFT JOIN "seats_usage" ON "seats_seat"."id" = "seats_usage"."seat_id" LEFT JOIN "accounts_user" ON "seats_usage"."user_id" = "accounts_user"."id" WHERE "seats_seat"."layout_id" = 5')
+def seat_list(request):
+    seats = Seat.objects.select_related('layout').order_by('id').all()
+    layout_name = request.GET.get('layout_name')
+    if layout_name is not None:
+        seats = seats.filter(layout__layout_name__contains=layout_name)
+    return render(request, 'seats/seat_list.html', {'seats' : seats})
 
-    seats = Seat.objects.prefetch_related('user').filter(layout=5)
-    for seat in seats:
-        logger.info(seat.user.all())
-        logger.info(type(seat.user.all()))
-        if seat.user.all().exists():
-            for user in seat.user.all():
-                logger.info(str(seat.id) + ' has fullname ' + user.get_full_name() + ', lastname ' + user.last_name)
-        else:
-            logger.info(str(seat.id) + ' has no user')
-    return render(request, 'seats/color_code.html', {'view_type': view_type, 'layout': layout, 'seats': seats})
+
+@login_required
+def usage_list(request):
+    usages = Usage.objects.prefetch_related('user').order_by('id').all()
+    last_name = request.GET.get('last_name')
+    if last_name is not None:
+        usages = usages.filter(user__last_name__contains=last_name)
+    first_name = request.GET.get('first_name')
+    if first_name is not None:
+        usages = usages.filter(user__first_name__contains=first_name)
+    return render(request, 'seats/usage_list.html', {'usages' : usages})
+
+
+@login_required
+def usagelog_list(request):
+    usagelogs = UsageLog.objects.prefetch_related('user').order_by('id').all()
+    last_name = request.GET.get('last_name')
+    if last_name is not None:
+        usagelogs = usagelogs.filter(user__last_name__contains=last_name)
+    first_name = request.GET.get('first_name')
+    if first_name is not None:
+        usagelogs = usagelogs.filter(user__first_name__contains=first_name)
+    return render(request, 'seats/usagelog_list.html', {'usagelogs' : usagelogs})

@@ -1,3 +1,4 @@
+from asyncio.log import logger
 from cmath import log
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -7,6 +8,7 @@ from .models import User
 
 def hello(request):
     return render(request, 'accounts/hello.html')
+
 
 @login_required
 def initial_setting(request):
@@ -36,10 +38,11 @@ def initial_setting(request):
         form = MyUserInitialSettingForm(instance=login_user)
     return render(request, 'accounts/initial_setting.html', {'form' : form})
 
+
 @login_required
-def account_detail(request):
+def user_detail(request):
     """
-    自身の会員情報を照会
+    自身のユーザー情報を照会
 
     Parameters
     ----------
@@ -47,17 +50,18 @@ def account_detail(request):
 
     Templates
     -------
-    照会ページ : accounts/account_detail.html
+    照会ページ : accounts/user_detail.html
     """
     # login_user = request.user
     id = request.user.id
     user = User.objects.get(id=id)
-    return render(request, 'accounts/account_detail.html', {'user' : user})
+    return render(request, 'accounts/user_detail.html', {'user' : user})
+
 
 @login_required
-def account_edit(request):
+def user_edit(request):
     """
-    自身の会員情報を編集
+    自身のユーザー情報を編集
 
     Parameters
     ----------
@@ -65,8 +69,8 @@ def account_edit(request):
 
     Templates
     -------
-    編集ページ : accounts/account_edit.html
-    保存後の遷移先 : account_detail
+    編集ページ : accounts/user_edit.html
+    保存後の遷移先 : user_detail
     """
     # login_user = request.user
     id = request.user.id
@@ -76,7 +80,18 @@ def account_edit(request):
         form = MyUserChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('account_detail')
+            return redirect('user_detail')
     else:
         form = MyUserChangeForm(instance=user)
-    return render(request, 'accounts/account_edit.html', {'user' : user, 'form' : form})
+    return render(request, 'accounts/user_edit.html', {'user' : user, 'form' : form})
+
+
+def user_list(request):
+    users = User.objects.order_by('id').all()
+    last_name = request.GET.get('last_name')
+    if last_name is not None:
+        users = users.filter(last_name__contains=last_name)
+    first_name = request.GET.get('first_name')
+    if first_name is not None:
+        users = users.filter(first_name__contains=first_name)
+    return render(request, 'accounts/user_list.html', {'users' : users})

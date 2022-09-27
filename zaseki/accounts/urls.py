@@ -10,6 +10,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(redirect_authenticated_user=True, template_name='accounts/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('init/', views.initial_setting, name='initial_setting'),
-    path('detail/', views.account_detail, name='account_detail'),
-    path('edit/', views.account_edit, name='account_edit'),
+    path('detail/', views.user_detail, name='user_detail'),
+    path('list/', views.user_list, name='user_list'),
+    path('edit/', views.user_edit, name='user_edit'),
 ]

@@ -25,8 +25,8 @@
             <td>{% if user.is_superuser %}管理者{% elif user.is_staff %}スタッフ{% else %}一般{% endif %}</td>
         </tr>
     </table>
-    {% url 'account_edit' as account_edit_url %}
-    {% bootstrap_button button_type="link" content="編集" href=account_edit_url %}
+    {% url 'user_edit' as user_edit_url %}
+    {% bootstrap_button button_type="link" content="編集" href=user_edit_url %}
     {% if user.is_superuser %}
     {% url 'admin:index' as admin_url %}
     {% bootstrap_button button_type="link" content="管理ページ" href=admin_url target="_blank" %}
