@@ -1,89 +1,13 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
 import logging
 
-from .forms import LayoutForm
-from .models import Layout, Seat, Usage, UsageLog
+from seats.models import Layout, Seat, Usage
 
 logger = logging.getLogger('django')
-
-
-def top(request):
-    return redirect('layout_list')
-
-
-def layout_list(request):
-    login_user = request.user
-    if login_user.is_authenticated:
-        # 姓名が設定されていない場合は設定画面へ
-        if not login_user.last_name or not login_user.first_name:
-            return redirect('initial_setting')
-    layouts = Layout.objects.prefetch_related('created_by').order_by('id').all()
-    layout_name = request.GET.get('layout_name')
-    if layout_name is not None:
-        layouts = layouts.filter(layout_name__contains=layout_name)
-    # トップページへ
-    return render(request, 'seats/layout_list.html', {"layouts": layouts})
-
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def layout_new(request):
-    # https://qiita.com/j54854/items/1f0560142e39d888251c
-    if request.method == 'POST':
-        # 画像情報はrequest.POSTに持っていないかつ、画像はblank=False null=Falseであるため、is_valid前にformに設定する必要がある
-        form = LayoutForm(request.POST, request.FILES)
-        if form.is_valid():
-            layout = form.save(commit=False)
-            # layout.image = request.FILES['image'] blank=True null=Trueならここでもいい
-            layout.created_by = request.user
-            layout.updated_by = request.user
-            layout.updated_at = timezone.now
-            layout.save()
-            logger.info("レイアウトを作成しました。")
-            return redirect('layout_list')
-    else:
-        form = LayoutForm()
-    return render(request, 'seats/layout_new.html', {'form' : form})
-
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def layout_edit(request, layout_id):
-    layout = get_object_or_404(Layout, pk=layout_id)
-    if request.method == 'POST':
-        form = LayoutForm(request.POST, request.FILES, instance=layout)
-        if form.is_valid():
-            layout = form.save(commit=False)
-            layout.updated_by = request.user
-            layout.updated_at = timezone.now
-            layout.save()
-            logger.info("レイアウトを更新しました。")
-            return redirect('layout_detail', layout_id=layout_id)
-    else:
-        form = LayoutForm(instance=layout)
-    return render(request, 'seats/layout_edit.html', {'form' : form})
-
-
-def layout_detail(request, layout_id):
-    layout = get_object_or_404(Layout, pk=layout_id)
-    # TODO:ユーザ2回呼んでる
-    # layout = Layout.objects.prefetch_related('created_by').prefetch_related('updated_by').filter(pk=layout_id).first()
-    return render(request, "seats/layout_detail.html", {"layout": layout})
-
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def layout_delete(request, layout_id):
-    layout = get_object_or_404(Layout, pk=layout_id)
-    try:
-        layout.delete()
-    except:
-        logger.error("レイアウト削除に失敗しました。")
-    return redirect('layout_list')
 
 
 @login_required
@@ -217,27 +141,3 @@ def seat_list(request):
     if layout_name is not None:
         seats = seats.filter(layout__layout_name__contains=layout_name)
     return render(request, 'seats/seat_list.html', {'seats' : seats})
-
-
-@login_required
-def usage_list(request):
-    usages = Usage.objects.prefetch_related('user').order_by('id').all()
-    last_name = request.GET.get('last_name')
-    if last_name is not None:
-        usages = usages.filter(user__last_name__contains=last_name)
-    first_name = request.GET.get('first_name')
-    if first_name is not None:
-        usages = usages.filter(user__first_name__contains=first_name)
-    return render(request, 'seats/usage_list.html', {'usages' : usages})
-
-
-@login_required
-def usagelog_list(request):
-    usagelogs = UsageLog.objects.prefetch_related('user').order_by('id').all()
-    last_name = request.GET.get('last_name')
-    if last_name is not None:
-        usagelogs = usagelogs.filter(user__last_name__contains=last_name)
-    first_name = request.GET.get('first_name')
-    if first_name is not None:
-        usagelogs = usagelogs.filter(user__first_name__contains=first_name)
-    return render(request, 'seats/usagelog_list.html', {'usagelogs' : usagelogs})
