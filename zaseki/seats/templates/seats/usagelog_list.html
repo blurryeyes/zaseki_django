@@ -5,16 +5,35 @@
     <div class="welcome">
         <h1 class="title">利用履歴</h1>
     </div>
-    <form class="row g-3">
-        <div class="col-6">
-            <label for="searchLastName" class="form-label">姓</label>
-            <input id="searchLastName" class="form-control" name="last_name" value="{{ request.GET.last_name }}" type="text"/>
+    <form class="form-group form-inline input-group-sm">
+        <div class="mb-3 row">
+            <label for="searchLayoutName" class="col-md-1 control-label d-flex align-items-center justify-content-center">レイアウト名</label>
+            <div class="col-md-3">
+                <input id="searchLayoutName" class="form-control" name="layout_name" value="{{ request.GET.layout_name }}" type="text"/>
+            </div>
         </div>
-        <div class="col-6">
-            <label for="searchFirstName" class="form-label">名</label>
-            <input id="searchFirstName" class="form-control" name="first_name" value="{{ request.GET.first_name }}" type="text"/>
+        <div class="mb-3 row">
+            <label for="searchLastName" class="col-md-1 control-label d-flex align-items-center justify-content-center">姓</label>
+            <div class="col-md-3">
+                <input id="searchLastName" class="form-control" name="last_name" value="{{ request.GET.last_name }}" type="text"/>
+            </div>
+            <label class="col-md-1 control-label d-flex align-items-center"></label>
+            <label for="searchFirstName" class="col-md-1 control-label d-flex align-items-center justify-content-center">名</label>
+            <div class="col-md-3">
+                <input id="searchFirstName" class="form-control" name="first_name" value="{{ request.GET.first_name }}" type="text"/>
+            </div>
         </div>
-        <div class="col-12">
+        <div class="mb-3 row">
+            <label for="searchSitDatetimeStart" class="col-md-1 control-label d-flex align-items-center justify-content-center">着席日時</label>
+            <div class="col-md-3">
+                <input id="searchSitDatetimeStart" class="form-control" name="sitting_time_begin" value="{{ request.GET.sitting_time_begin }}" type="datetime-local"/>
+            </div>
+            <label class="col-md-1 control-label d-flex align-items-center justify-content-center">～</label>
+            <div class="col-md-3">
+                <input id="searchSitDatetimeEnd" class="form-control" name="sitting_time_end" value="{{ request.GET.sitting_time_end }}" type="datetime-local"/>
+            </div>
+        </div>
+        <div class="col-md-12">
             <button class="btn btn-primary" type="submit">検索</button>
             <a class="btn btn-secondary" href="{% url 'usagelog_list' %}">リセット</a>
         </div>
@@ -23,7 +42,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th>レイアウトID</th>
+            <th>レイアウト名</th>
             <th>ユーザ名</th>
             <th>座席ID</th>
             <th>着席日時</th>
@@ -33,7 +52,7 @@
         <tbody>
         {% for usagelog in usagelogs %}
         <tr>
-            <td>{{ usagelog.layout_id }}</td>
+            <td><a href="{% url 'layout_detail' usagelog.layout.id %}">{{ usagelog.layout.layout_name }}</a></td>
             <td>{{ usagelog.user.get_full_name }}</td>
             <td>{{ usagelog.seat_id }}</td>
             <td>{{ usagelog.sit_datetime }}</td>
