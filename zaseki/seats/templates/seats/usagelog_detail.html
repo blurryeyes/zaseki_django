@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block main %}
+<div class="container">
+    <h2>利用履歴詳細</h2>
+    <table class="table">
+        <tr>
+            <th>利用者</th>
+            <td>{{ usagelog.user.get_full_name }}</td>
+        </tr>
+        <tr>
+            <th>着席日時</th>
+            <td>{{ usagelog.sit_datetime }}</td>
+        </tr>
+        <tr>
+            <th>離席日時</th>
+            <td>{{ usagelog.leave_datetime }}</td>
+        </tr>
+    </table>
+</div>
+{% endblock main %}

@@ -22,7 +22,7 @@
         <thead>
         <tr>
             <th>座席ID</th>
-            <th>レイアウトID</th>
+            <th>レイアウト名</th>
             <th>X座標</th>
             <th>Y座標</th>
         </tr>
@@ -30,7 +30,7 @@
         <tbody>
         {% for seat in seats %}
         <tr>
-            <td>{{ seat.id }}</td>
+            <td><a href="{% url 'seat_detail' seat.id %}">{{ seat.id }}</a></td>
             <td><a href="{% url 'layout_detail' seat.layout_id %}">{{ seat.layout.layout_name }}</a></td>
             <td>{{ seat.x_coordinate }}</td>
             <td>{{ seat.y_coordinate }}</td>

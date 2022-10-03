@@ -29,3 +29,12 @@ def usagelog_list(request):
     if sitting_time_end is not None:
         usagelogs = usagelogs.filter(Q(sit_datetime__lte=sitting_time_end) | ~Q(leave_datetime__gte=sitting_time_end))
     return render(request, 'seats/usagelog_list.html', {'usagelogs' : usagelogs})
+
+
+@login_required
+def usagelog_detail(request, usagelog_id):
+    usagelog = UsageLog.objects.select_related('user').select_related('seat__layout').filter(id = usagelog_id).first()
+    params = {
+        'usagelog' : usagelog,
+        }
+    return render(request, 'seats/usagelog_detail.html', params)

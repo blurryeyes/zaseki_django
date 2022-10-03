@@ -36,18 +36,18 @@
     <table class="table">
         <thead>
         <tr>
+            <th>座席ID</th>
             <th>ユーザ名</th>
             <th>レイアウト名</th>
-            <th>座席ID</th>
             <th>着席日時</th>
         </tr>
         </thead>
         <tbody>
         {% for usage in usages %}
         <tr>
-            <td>{{ usage.user.get_full_name }}</td>
+            <td><a href="{% url 'seat_detail' usage.seat_id %}">{{ usage.seat_id }}</a></td>
+            <td><a href="{% url 'other_user_detail' usage.user.id %}">{{ usage.user.get_full_name }}</a></td>
             <td><a href="{% url 'layout_detail' usage.seat.layout.id %}">{{ usage.seat.layout.layout_name }}</a></td>
-            <td>{{ usage.seat_id }}</td>
             <td>{{ usage.sit_datetime }}</td>
         </tr>
         {% endfor %}

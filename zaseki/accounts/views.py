@@ -6,9 +6,6 @@ from django.shortcuts import render, redirect
 from .forms import MyUserChangeForm, MyUserInitialSettingForm
 from .models import User
 
-def hello(request):
-    return render(request, 'accounts/hello.html')
-
 
 @login_required
 def initial_setting(request):
@@ -40,7 +37,7 @@ def initial_setting(request):
 
 
 @login_required
-def user_detail(request):
+def account_detail(request):
     """
     自身のユーザー情報を照会
 
@@ -50,16 +47,16 @@ def user_detail(request):
 
     Templates
     -------
-    照会ページ : accounts/user_detail.html
+    照会ページ : accounts/account_detail.html
     """
     # login_user = request.user
     id = request.user.id
     user = User.objects.get(id=id)
-    return render(request, 'accounts/user_detail.html', {'user' : user})
+    return render(request, 'accounts/account_detail.html', {'user' : user})
 
 
 @login_required
-def user_edit(request):
+def account_edit(request):
     """
     自身のユーザー情報を編集
 
@@ -69,8 +66,8 @@ def user_edit(request):
 
     Templates
     -------
-    編集ページ : accounts/user_edit.html
-    保存後の遷移先 : user_detail
+    編集ページ : accounts/account_edit.html
+    保存後の遷移先 : account_detail
     """
     # login_user = request.user
     id = request.user.id
@@ -80,10 +77,10 @@ def user_edit(request):
         form = MyUserChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('user_detail')
+            return redirect('account_detail')
     else:
         form = MyUserChangeForm(instance=user)
-    return render(request, 'accounts/user_edit.html', {'user' : user, 'form' : form})
+    return render(request, 'accounts/account_edit.html', {'user' : user, 'form' : form})
 
 
 def user_list(request):
@@ -95,3 +92,12 @@ def user_list(request):
     if first_name is not None:
         users = users.filter(first_name__contains=first_name)
     return render(request, 'accounts/user_list.html', {'users' : users})
+
+
+@login_required
+def other_user_detail(request, user_id):
+    user = User.objects.filter(id = user_id).first()
+    params = {
+        'user' : user,
+        }
+    return render(request, 'accounts/other_user_detail.html', params)
