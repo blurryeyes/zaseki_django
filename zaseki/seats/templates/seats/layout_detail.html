@@ -69,8 +69,8 @@
     {% if user.is_authenticated %}
     {% url 'layout_edit' layout.id as layout_edit_url %}
     {% bootstrap_button button_class="btn-primary staff-act" button_type="link" content="編集" href=layout_edit_url %}
-    {% url 'seat_place' layout.id as seat_place_url %}
-    {% bootstrap_button button_class="btn-success staff-act" button_type="link" content="座席設置へGO!" href=seat_place_url %}
+    {% url 'layout_place' layout.id as layout_place_url %}
+    {% bootstrap_button button_class="btn-success staff-act" button_type="link" content="座席設置へGO!" href=layout_place_url %}
     {% url 'layout_delete' layout.id as layout_delete_url %}
     {% bootstrap_button id="layout-delete" button_class="btn-danger staff-act" button_type="link" content="削除" href=layout_delete_url %}
     {% endif %}

@@ -10,12 +10,12 @@ urlpatterns = [
     path('layout/<int:layout_id>/', views.layout.layout_detail, name='layout_detail'),
     path('layout/<int:layout_id>/edit/', views.layout.layout_edit, name='layout_edit'),
     path('layout/<int:layout_id>/delete/', views.layout.layout_delete, name='layout_delete'),
+    path('layout/place/<int:layout_id>/', views.layout.layout_place, name='layout_place'),
+    path('layout/sit/<int:layout_id>/', views.layout.layout_sit, name='layout_sit'),
+    path('layout/view/<int:layout_id>/', views.layout.layout_view, name='layout_view'),
 
     # seat
     path('seat/', views.seat.seat_list, name='seat_list'),
-    path('seat/place/<int:layout_id>/', views.seat.seat_place, name='seat_place'),
-    path('seat/sit/<int:layout_id>/', views.seat.seat_sit, name='seat_sit'),
-    path('seat/view/<int:layout_id>/', views.seat.seat_view, name='seat_view'),
 
     # usage
     path('usage/', views.usage.usage_list, name='usage_list'),
