@@ -36,8 +36,8 @@
         <tbody>
         {% for layout in layouts %}
         <tr>
-            <td><a class="btn btn-sm btn-primary" href="{% url 'seat_view' layout.id %}">GO!</a></td>
-            <td><a class="btn btn-sm btn-success authenticated-act" href="{% url 'seat_sit' layout.id %}">GO!</a></td>
+            <td><a class="btn btn-sm btn-primary" href="{% url 'layout_view' layout.id %}">GO!</a></td>
+            <td><a class="btn btn-sm btn-success authenticated-act" href="{% url 'layout_sit' layout.id %}">GO!</a></td>
             <td><a href="{% url 'layout_detail' layout.id %}">{{ layout.layout_name }}</a></td>
             <td>{{ layout.created_by.get_full_name }}</td>
             <td>{{ layout.created_at }}</td>
