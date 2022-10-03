@@ -5,12 +5,14 @@
     <div class="welcome">
         <h1 class="title">座席</h1>
     </div>
-    <form class="row g-3">
-        <div class="col-6">
-            <label for="searchLayoutName" class="form-label">レイアウト</label>
-            <input id="searchLayoutName" class="form-control" name="layout_name" value="{{ request.GET.layout_name }}" type="text"/>
+    <form class="form-group form-inline input-group-sm">
+        <div class="mb-3 row">
+            <label for="searchLayoutName" class="col-md-1 control-label d-flex align-items-center justify-content-center">レイアウト名</label>
+            <div class="col-md-3">
+                <input id="searchLayoutName" class="form-control" name="layout_name" value="{{ request.GET.layout_name }}" type="text"/>
+            </div>
         </div>
-        <div class="col-12">
+        <div class="col-md-12">
             <button class="btn btn-primary" type="submit">検索</button>
             <a class="btn btn-secondary" href="{% url 'seat_list' %}">リセット</a>
         </div>

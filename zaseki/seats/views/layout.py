@@ -20,7 +20,7 @@ def layout_list(request):
         # 姓名が設定されていない場合は設定画面へ
         if not login_user.last_name or not login_user.first_name:
             return redirect('initial_setting')
-    layouts = Layout.objects.prefetch_related('created_by').order_by('id').all()
+    layouts = Layout.objects.select_related('created_by').order_by('id').all()
     layout_name = request.GET.get('layout_name')
     if layout_name is not None:
         layouts = layouts.filter(layout_name__contains=layout_name)
