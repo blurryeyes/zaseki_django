@@ -141,6 +141,11 @@ class Seat(models.Model):
     #     meta_field_names = map(lambda x: x.name, filtered_fields)
     #     return list(meta_field_names)
 
+    def delete(self, *args, **kwargs):
+        usage = Usage.objects.get(seat = self.id)
+        usage.delete()
+        super(Seat, self).delete(*args, **kwargs)
+
 
 class Usage(models.Model):
     seat = models.OneToOneField(Seat, on_delete=models.SET_NULL, null=True)
@@ -154,11 +159,6 @@ class Usage(models.Model):
         self.seat.is_used = True
         self.seat.save()
         super(Usage, self).save(*args, **kwargs)
-    
-    # def delete(self, *args, **kwargs):
-    #     self.seat.is_used = False
-    #     self.seat.save()
-    #     super(Usage, self).delete()
 
     def delete(self, *args, **kwargs):
         self.seat.is_used = False

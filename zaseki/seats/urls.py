@@ -16,10 +16,12 @@ urlpatterns = [
 
     # seat
     path('seat/', views.seat.seat_list, name='seat_list'),
+    path('seat/<int:seat_id>/', views.seat.seat_detail, name='seat_detail'),
 
     # usage
     path('usage/', views.usage.usage_list, name='usage_list'),
     
     # usagelog
     path('usagelog/', views.usagelog.usagelog_list, name='usagelog_list'),
+    path('usagelog/<int:usagelog_id>/', views.usagelog.usagelog_detail, name='usagelog_detail'),
 ]

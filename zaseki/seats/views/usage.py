@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Prefetch
 from django.shortcuts import render
 
 import logging
@@ -26,3 +25,12 @@ def usage_list(request):
     if sitting_time_end is not None:
         usages = usages.filter(sit_datetime__lte=sitting_time_end)
     return render(request, 'seats/usage_list.html', {'usages' : usages})
+
+
+@login_required
+def usage_detail(request, usage_id):
+    usage = Usage.objects.select_related('user').select_related('seat__layout').filter(id = usage_id).first()
+    params = {
+        'usage' : usage,
+        }
+    return render(request, 'seats/usage_detail.html', params)
