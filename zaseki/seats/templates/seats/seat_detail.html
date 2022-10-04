@@ -30,11 +30,13 @@
             <th>利用状況ID</th>
             <th>利用者</th>
             <th>着席日時</th>
+            <th>利用時間</th>
         </tr>
         <tr>
             <td>{{ usage.id }}</td>
             <td><a href="{% url 'user_detail' usage.user.id %}">{{ usage.user.get_full_name }}</a></td>
             <td>{{ usage.sit_datetime }}</td>
+            <td>{{ usage.sitting_time }}</td>
         </tr>
     </table>
     {% else %}
@@ -48,12 +50,14 @@
             <th>利用者</th>
             <th>着席日時</th>
             <th>離席日時</th>
+            <th>利用時間</th>
         </tr>
         {% for usagelog in usagelogs %}
         <tr>
             <td><a href="{% url 'user_detail' usagelog.user.id %}">{{ usagelog.user.get_full_name }}</a></td>
             <td>{{ usagelog.sit_datetime }}</td>
             <td>{{ usagelog.leave_datetime }}</td>
+            <td>{{ usagelog.sitting_time }}</td>
         </tr>
         {% endfor %}
     </table>

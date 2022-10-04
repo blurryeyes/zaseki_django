@@ -21,7 +21,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th>座席ID</th>
+            <th></th>
             <th>レイアウト名</th>
             <th>X座標</th>
             <th>Y座標</th>
@@ -30,7 +30,7 @@
         <tbody>
         {% for seat in seats %}
         <tr>
-            <td><a href="{% url 'seat_detail' seat.id %}">{{ seat.id }}</a></td>
+            <td><a href="{% url 'seat_detail' seat.id %}">link</a></td>
             <td><a href="{% url 'layout_detail' seat.layout.id %}">{{ seat.layout.layout_name }}</a></td>
             <td>{{ seat.x_coordinate }}</td>
             <td>{{ seat.y_coordinate }}</td>
