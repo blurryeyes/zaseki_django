@@ -34,12 +34,14 @@
             <th>座席ID</th>
             <th>レイアウト名</th>
             <th>着席日時</th>
+            <th>利用時間</th>
         </tr>
         {% for usage in usages %}
         <tr>
             <td><a href="{% url 'seat_detail' usage.seat.id %}">{{ usage.seat.id }}</a></td>
             <td><a href="{% url 'layout_detail' usage.seat.layout.id %}">{{ usage.seat.layout.layout_name }}</a></td>
             <td>{{ usage.sit_datetime }}</td>
+            <td>{{ usage.sitting_time }}</td>
         </tr>
         {% endfor %}
     </table>
@@ -54,12 +56,14 @@
             <th>レイアウト名</th>
             <th>着席日時</th>
             <th>離席日時</th>
+            <th>利用時間</th>
         </tr>
         {% for usagelog in usagelogs %}
         <tr>
             <td><a href="{% url 'layout_detail' usagelog.seat.layout.id %}">{{ usagelog.seat.layout.layout_name }}</a></td>
             <td>{{ usagelog.sit_datetime }}</td>
             <td>{{ usagelog.leave_datetime }}</td>
+            <td>{{ usagelog.sitting_time }}</td>
         </tr>
         {% endfor %}
     </table>

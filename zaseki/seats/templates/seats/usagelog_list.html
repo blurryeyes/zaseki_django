@@ -42,23 +42,23 @@
     <table class="table">
         <thead>
         <tr>
-            <th>利用履歴ID</th>
+            <th></th>
             <th>レイアウト名</th>
             <th>ユーザ名</th>
-            <th>座席ID</th>
             <th>着席日時</th>
             <th>離席日時</th>
+            <th>利用時間</th>
         </tr>
         </thead>
         <tbody>
         {% for usagelog in usagelogs %}
         <tr>
-            <td>{{ usagelog.id }}</td>
+            <td><a href="{% url 'seat_detail' usagelog.seat.id %}">link</a></td>
             <td><a href="{% url 'layout_detail' usagelog.layout.id %}">{{ usagelog.layout.layout_name }}</a></td>
             <td><a href="{% url 'user_detail' usagelog.user.id %}">{{ usagelog.user.get_full_name }}</a></td>
-            <td><a href="{% url 'seat_detail' usagelog.seat.id %}">{{ usagelog.seat.id }}</a></td>
             <td>{{ usagelog.sit_datetime }}</td>
             <td>{{ usagelog.leave_datetime }}</td>
+            <td>{{ usagelog.sitting_time }}</td>
         </tr>
         {% endfor %}
         </tbody>

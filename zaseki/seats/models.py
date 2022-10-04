@@ -4,6 +4,9 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
+
+from zaseki.myutils import format_dhms
+
 import logging
 import os
 # import uuid
@@ -185,6 +188,11 @@ class Usage(models.Model):
     
     def __str__(self):
         return '座席ID:' + str(self.seat.id) + ' 使用者:' + self.user.email
+    
+    def sitting_time(self):
+        sitting_time = timezone.now() - self.sit_datetime
+        format_sitting_time = format_dhms(sitting_time.days, sitting_time.seconds)
+        return format_sitting_time
 
 
 class UsageLog(models.Model):
@@ -199,3 +207,8 @@ class UsageLog(models.Model):
 
     class Meta:
        verbose_name_plural = '利用履歴'
+
+    def sitting_time(self):
+        sitting_time = self.leave_datetime - self.sit_datetime
+        format_sitting_time = format_dhms(sitting_time.days, sitting_time.seconds)
+        return format_sitting_time
