@@ -55,7 +55,7 @@
         <tr>
             <td><a href="{% url 'usagelog_detail' usagelog.id %}">{{ usagelog.id }}</a></td>
             <td><a href="{% url 'layout_detail' usagelog.layout_id %}">{{ usagelog.layout.layout_name }}</a></td>
-            <td><a href="{% url 'other_user_detail' usagelog.user_id %}">{{ usagelog.user.get_full_name }}</a></td>
+            <td><a href="{% url 'user_detail' usagelog.user_id %}">{{ usagelog.user.get_full_name }}</a></td>
             <td><a href="{% url 'seat_detail' usagelog.seat_id %}">{{ usagelog.seat_id }}</a></td>
             <td>{{ usagelog.sit_datetime }}</td>
             <td>{{ usagelog.leave_datetime }}</td>

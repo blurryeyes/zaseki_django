@@ -12,5 +12,5 @@ urlpatterns = [
     path('init/', views.initial_setting, name='initial_setting'),
     path('detail/', views.account_detail, name='account_detail'),
     path('edit/', views.account_edit, name='account_edit'),
-    path('user/<int:user_id>/', views.other_user_detail, name='other_user_detail'),
+    path('user/<int:user_id>/', views.user_detail, name='user_detail'),
 ]

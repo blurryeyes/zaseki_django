@@ -95,9 +95,9 @@ def user_list(request):
 
 
 @login_required
-def other_user_detail(request, user_id):
+def user_detail(request, user_id):
     user = User.objects.filter(id = user_id).first()
     params = {
         'user' : user,
         }
-    return render(request, 'accounts/other_user_detail.html', params)
+    return render(request, 'accounts/user_detail.html', params)
