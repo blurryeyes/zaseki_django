@@ -20,6 +20,7 @@ def layout_list(request):
     if login_user.is_authenticated:
         # 姓名が設定されていない場合は設定画面へ
         if not login_user.last_name or not login_user.first_name:
+            logger.info("名前設定画面へ遷移します。")
             return redirect('initial_setting')
     layouts = Layout.objects.select_related('created_by').order_by('id').all()
     layout_name = request.GET.get('layout_name')
@@ -69,9 +70,9 @@ def layout_edit(request, layout_id):
 
 
 def layout_detail(request, layout_id):
-    layout = get_object_or_404(Layout, pk=layout_id)
+    # layout = get_object_or_404(Layout, pk=layout_id)
     # TODO:ユーザ2回呼んでる
-    # layout = Layout.objects.prefetch_related('created_by').prefetch_related('updated_by').filter(pk=layout_id).first()
+    layout = Layout.objects.select_related('created_by').select_related('updated_by').filter(pk=layout_id).first()
     return render(request, "seats/layout_detail.html", {"layout": layout})
 
 

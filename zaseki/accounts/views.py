@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from .forms import MyUserChangeForm, MyUserInitialSettingForm
 from .models import User
+from seats.models import Usage, UsageLog
 
 
 @login_required
@@ -30,6 +31,7 @@ def initial_setting(request):
         form = MyUserInitialSettingForm(request.POST, instance=login_user)
         if form.is_valid():
             form.save()
+            logger.info("姓名が設定されました。")
             return redirect('top')
     else:
         form = MyUserInitialSettingForm(instance=login_user)
@@ -49,7 +51,6 @@ def account_detail(request):
     -------
     照会ページ : accounts/account_detail.html
     """
-    # login_user = request.user
     id = request.user.id
     user = User.objects.get(id=id)
     return render(request, 'accounts/account_detail.html', {'user' : user})
@@ -69,10 +70,8 @@ def account_edit(request):
     編集ページ : accounts/account_edit.html
     保存後の遷移先 : account_detail
     """
-    # login_user = request.user
     id = request.user.id
     user = User.objects.get(id=id)
-    # employee_number = user.employee_number
     if request.method == 'POST':
         form = MyUserChangeForm(request.POST, instance=user)
         if form.is_valid():
@@ -95,9 +94,13 @@ def user_list(request):
 
 
 @login_required
-def other_user_detail(request, user_id):
-    user = User.objects.filter(id = user_id).first()
+def user_detail(request, user_id):
+    user = User.objects.filter(id=user_id).first()
+    usages = Usage.objects.select_related('user').select_related('seat__layout').filter(user=user_id).order_by('sit_datetime')
+    usagelogs = UsageLog.objects.select_related('user').select_related('seat__layout').filter(user=user_id).order_by('sit_datetime')
     params = {
         'user' : user,
+        'usages' : usages,
+        'usagelogs' : usagelogs,
         }
-    return render(request, 'accounts/other_user_detail.html', params)
+    return render(request, 'accounts/user_detail.html', params)

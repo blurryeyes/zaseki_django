@@ -142,8 +142,15 @@ class Seat(models.Model):
     #     return list(meta_field_names)
 
     def delete(self, *args, **kwargs):
-        usage = Usage.objects.get(seat = self.id)
-        usage.delete()
+        usage = None
+        try:
+            usage = Usage.objects.get(seat = self.id)
+        except:
+            logger.info("紐づく利用状況はありません。")
+            pass
+        else:
+            logger.info("紐づく利用状況があります。")
+            usage.delete()
         super(Seat, self).delete(*args, **kwargs)
 
 
