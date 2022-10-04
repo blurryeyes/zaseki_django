@@ -7,6 +7,12 @@
     </div>
     <form class="form-group form-inline input-group-sm">
         <div class="mb-3 row">
+            <label for="searchLayoutName" class="col-md-1 control-label d-flex align-items-center justify-content-center">レイアウト名</label>
+            <div class="col-md-3">
+                <input id="searchLayoutName" class="form-control" name="layout_name" value="{{ request.GET.layout_name }}" type="text"/>
+            </div>
+        </div>
+        <div class="mb-3 row">
             <label for="searchLastName" class="col-md-1 control-label d-flex align-items-center justify-content-center">姓</label>
             <div class="col-md-3">
                 <input id="searchLastName" class="form-control" name="last_name" value="{{ request.GET.last_name }}" type="text"/>
@@ -45,7 +51,7 @@
         <tbody>
         {% for usage in usages %}
         <tr>
-            <td><a href="{% url 'seat_detail' usage.seat_id %}">{{ usage.seat_id }}</a></td>
+            <td><a href="{% url 'seat_detail' usage.seat.id %}">{{ usage.seat.id }}</a></td>
             <td><a href="{% url 'user_detail' usage.user.id %}">{{ usage.user.get_full_name }}</a></td>
             <td><a href="{% url 'layout_detail' usage.seat.layout.id %}">{{ usage.seat.layout.layout_name }}</a></td>
             <td>{{ usage.sit_datetime }}</td>

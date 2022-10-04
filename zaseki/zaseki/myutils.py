@@ -3,6 +3,8 @@ from django.utils import timezone
 import datetime
 import logging
 
+logger = logging.getLogger('django')
+
 
 INPUT_DATETIME_FORMAT = '%Y-%m-%dT%H:%M'
 

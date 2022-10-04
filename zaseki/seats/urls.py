@@ -23,5 +23,4 @@ urlpatterns = [
     
     # usagelog
     path('usagelog/', views.usagelog.usagelog_list, name='usagelog_list'),
-    path('usagelog/<int:usagelog_id>/', views.usagelog.usagelog_detail, name='usagelog_detail'),
 ]

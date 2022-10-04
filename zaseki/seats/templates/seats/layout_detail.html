@@ -59,11 +59,11 @@
         </tr>
         <tr>
             <th>作成者</th>
-            <td>{{ layout.created_by }}</td>
+            <td><a href="{% url 'user_detail' layout.created_by.id %}">{{ layout.created_by }}</a></td>
         </tr>
         <tr>
             <th>更新者</th>
-            <td>{{ layout.updated_by }}</td>
+            <td><a href="{% url 'user_detail' layout.updated_by.id %}">{{ layout.updated_by }}</a></td>
         </tr>
     </table>
     {% if user.is_authenticated %}

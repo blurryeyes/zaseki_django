@@ -12,6 +12,9 @@ logger = logging.getLogger('django')
 @login_required
 def usage_list(request):
     usages = Usage.objects.select_related('user').select_related('seat__layout').order_by('id').all()
+    layout_name = request.GET.get('layout_name')
+    if layout_name:
+        usages = usages.filter(seat__layout__layout_name__contains=layout_name)
     last_name = request.GET.get('last_name')
     if last_name is not None:
         usages = usages.filter(user__last_name__contains=last_name)
@@ -29,7 +32,7 @@ def usage_list(request):
 
 @login_required
 def usage_detail(request, usage_id):
-    usage = Usage.objects.select_related('user').select_related('seat__layout').filter(id = usage_id).first()
+    usage = Usage.objects.select_related('user').select_related('seat__layout').filter(id=usage_id).first()
     params = {
         'usage' : usage,
         }

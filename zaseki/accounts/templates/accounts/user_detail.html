@@ -6,9 +6,65 @@
     <h2>ユーザ詳細</h2>
     <table class="table">
         <tr>
-            <th>名前</th>
-            <td>{{ user.get_full_name }}</td>
+            <th>社員番号</th>
+            <td>{{ user.employee_number }}</td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>姓</th>
+            <td>{{ user.last_name }}</td>
+        </tr>
+        <tr>
+            <th>名</th>
+            <td>{{ user.first_name }}</td>
+        </tr>
+        <tr>
+            <th>権限</th>
+            <td>{% if user.is_superuser %}管理者{% elif user.is_staff %}スタッフ{% else %}一般{% endif %}</td>
         </tr>
     </table>
+    <br>
+    <h3>利用状況</h3>
+    {% if usages %}
+    <table class="table">
+        <tr>
+            <th>座席ID</th>
+            <th>レイアウト名</th>
+            <th>着席日時</th>
+        </tr>
+        {% for usage in usages %}
+        <tr>
+            <td><a href="{% url 'seat_detail' usage.seat.id %}">{{ usage.seat.id }}</a></td>
+            <td><a href="{% url 'layout_detail' usage.seat.layout.id %}">{{ usage.seat.layout.layout_name }}</a></td>
+            <td>{{ usage.sit_datetime }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>現在利用している座席はありません。</p>
+    {% endif %}
+    <br>
+    <h3>利用履歴</h3>
+    {% if usagelogs %}
+    <table class="table">
+        <tr>
+            <th>レイアウト名</th>
+            <th>着席日時</th>
+            <th>離席日時</th>
+        </tr>
+        {% for usagelog in usagelogs %}
+        <tr>
+            <td><a href="{% url 'layout_detail' usagelog.seat.layout.id %}">{{ usagelog.seat.layout.layout_name }}</a></td>
+            <td>{{ usagelog.sit_datetime }}</td>
+            <td>{{ usagelog.leave_datetime }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>利用履歴はありません。</p>
+    {% endif %}
 </div>
 {% endblock main %}

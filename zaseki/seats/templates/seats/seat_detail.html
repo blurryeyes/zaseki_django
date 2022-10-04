@@ -22,37 +22,43 @@
             <td>{{ seat.y_coordinate }}</td>
         </tr>
     </table>
-    <h2>利用状況</h2>
-    {% if usage is None %}
-    <p>現在空席です。</p>
-    {% else %}
+    <br>
+    <h3>利用状況</h3>
+    {% if usage %}
     <table class="table">
         <tr>
             <th>利用状況ID</th>
-            <td>{{ usage.id }}</td>
-        </tr>
-        <tr>
             <th>利用者</th>
-            <td><a href="{% url 'user_detail' usage.user.id %}">{{ usage.user.get_full_name }}</a></td>
+            <th>着席日時</th>
         </tr>
         <tr>
-            <th>着席日時</th>
+            <td>{{ usage.id }}</td>
+            <td><a href="{% url 'user_detail' usage.user.id %}">{{ usage.user.get_full_name }}</a></td>
             <td>{{ usage.sit_datetime }}</td>
         </tr>
     </table>
-    {% endif %}
-    <h2>利用履歴</h2>
-    {% if usagelogs is None %}
-    <p>利用履歴はありません。</p>
     {% else %}
+    <p>現在空席です。</p>
+    {% endif %}
+    <br>
+    <h3>利用履歴</h3>
+    {% if usagelogs %}
     <table class="table">
+        <tr>
+            <th>利用者</th>
+            <th>着席日時</th>
+            <th>離席日時</th>
+        </tr>
         {% for usagelog in usagelogs %}
         <tr>
-            <th><a href="{% url 'usagelog_detail' usagelog.id %}">{{ forloop.counter }}</a></th>
-            <td>{{ usagelog.user.get_full_name }} {{ usagelog.sit_datetime }}～{{ usagelog.leave_datetime }}</td>
+            <td><a href="{% url 'user_detail' usagelog.user.id %}">{{ usagelog.user.get_full_name }}</a></td>
+            <td>{{ usagelog.sit_datetime }}</td>
+            <td>{{ usagelog.leave_datetime }}</td>
         </tr>
         {% endfor %}
     </table>
+    {% else %}
+    <p>利用履歴はありません。</p>
     {% endif %}
 </div>
 {% endblock main %}

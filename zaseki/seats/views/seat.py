@@ -20,11 +20,11 @@ def seat_list(request):
 @login_required
 def seat_detail(request, seat_id):
     seat = Seat.objects.select_related('layout').get(id=seat_id)
-    usage = Usage.objects.select_related('user').filter(seat = seat_id).first()
-    usagelogs = UsageLog.objects.select_related('user').filter(seat = seat_id)
+    usage = Usage.objects.select_related('user').filter(seat=seat_id).first()
+    usagelogs = UsageLog.objects.select_related('user').filter(seat=seat_id).order_by('sit_datetime')
     params = {
         'seat' : seat,
         'usage' : usage,
-        'usagelogs' : usagelogs
+        'usagelogs' : usagelogs,
         }
     return render(request, 'seats/seat_detail.html', params)
