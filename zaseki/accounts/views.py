@@ -35,7 +35,10 @@ def initial_setting(request):
             return redirect('top')
     else:
         form = MyUserInitialSettingForm(instance=login_user)
-    return render(request, 'accounts/initial_setting.html', {'form' : form})
+    params = {
+        'form' : form,
+        }
+    return render(request, 'accounts/initial_setting.html', params)
 
 
 @login_required
@@ -53,7 +56,10 @@ def account_detail(request):
     """
     id = request.user.id
     user = User.objects.get(id=id)
-    return render(request, 'accounts/account_detail.html', {'user' : user})
+    params = {
+        'user' : user,
+        }
+    return render(request, 'accounts/account_detail.html', params)
 
 
 @login_required
@@ -79,27 +85,38 @@ def account_edit(request):
             return redirect('account_detail')
     else:
         form = MyUserChangeForm(instance=user)
-    return render(request, 'accounts/account_edit.html', {'user' : user, 'form' : form})
+    params = {
+        'user' : user,
+        'form' : form
+        }
+    return render(request, 'accounts/account_edit.html', params)
 
 
 def user_list(request):
     users = User.objects.order_by('id').all()
+    employee_number = request.GET.get('employee_number')
+    if employee_number is not None:
+        users = users.filter(employee_number=employee_number)
     last_name = request.GET.get('last_name')
     if last_name is not None:
         users = users.filter(last_name__contains=last_name)
     first_name = request.GET.get('first_name')
     if first_name is not None:
         users = users.filter(first_name__contains=first_name)
-    return render(request, 'accounts/user_list.html', {'users' : users})
+    params = {
+        'users' : users,
+        }
+    return render(request, 'accounts/user_list.html', params)
 
 
 @login_required
 def user_detail(request, user_id):
-    user = User.objects.filter(id=user_id).first()
+    display_user = User.objects.filter(id=user_id).first()
     usages = Usage.objects.select_related('user').select_related('seat__layout').filter(user=user_id).order_by('sit_datetime')
     usagelogs = UsageLog.objects.select_related('user').select_related('seat__layout').filter(user=user_id).order_by('sit_datetime')
     params = {
-        'user' : user,
+        # 変数名「user」はbase.htmlと被るので違う名前にすること
+        'display_user' : display_user,
         'usages' : usages,
         'usagelogs' : usagelogs,
         }

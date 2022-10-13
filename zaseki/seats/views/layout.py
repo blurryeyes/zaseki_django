@@ -26,8 +26,11 @@ def layout_list(request):
     layout_name = request.GET.get('layout_name')
     if layout_name is not None:
         layouts = layouts.filter(layout_name__contains=layout_name)
+    params = {
+        "layouts": layouts,
+        }
     # トップページへ
-    return render(request, 'seats/layout_list.html', {"layouts": layouts})
+    return render(request, 'seats/layout_list.html', params)
 
 
 @login_required
@@ -48,7 +51,10 @@ def layout_new(request):
             return redirect('layout_list')
     else:
         form = LayoutForm()
-    return render(request, 'seats/layout_new.html', {'form' : form})
+    params = {
+        'form' : form,
+        }
+    return render(request, 'seats/layout_new.html', params)
 
 
 @login_required
@@ -66,14 +72,24 @@ def layout_edit(request, layout_id):
             return redirect('layout_detail', layout_id=layout_id)
     else:
         form = LayoutForm(instance=layout)
-    return render(request, 'seats/layout_edit.html', {'form' : form})
+    params = {
+        'form' : form,
+        }
+    return render(request, 'seats/layout_edit.html', params)
 
 
 def layout_detail(request, layout_id):
-    # layout = get_object_or_404(Layout, pk=layout_id)
-    # TODO:ユーザ2回呼んでる
     layout = Layout.objects.select_related('created_by').select_related('updated_by').filter(pk=layout_id).first()
-    return render(request, "seats/layout_detail.html", {"layout": layout})
+    seats_count = Seat.objects.filter(layout=layout_id).count()
+    usages_count = Usage.objects.select_related('seat__layout').filter(seat__layout__id=layout_id).count()
+    usage_raito = round((usages_count / seats_count) * 100, 2)
+    params = {
+        "layout": layout,
+        "seats_count": seats_count,
+        "usages_count": usages_count,
+        "usage_raito": usage_raito,
+        }
+    return render(request, "seats/layout_detail.html", params)
 
 
 @login_required
@@ -132,7 +148,12 @@ def layout_place(request, layout_id):
     seats = Seat.objects.prefetch_related('user').filter(layout=layout_id)
     logger.info("座席を取得しました。")
     # TODO:縦横比より短い辺を基準に表示する画像サイズを決定
-    return render(request, 'seats/layout_base.html', {'view_type': view_type, 'layout': layout, 'seats': seats})
+    params = {
+        'view_type': view_type,
+        'layout': layout,
+        'seats': seats
+        }
+    return render(request, 'seats/layout_base.html', params)
 
 
 @login_required
@@ -152,7 +173,12 @@ def layout_sit(request, layout_id):
     # https://chuna.tech/detail/49/
     seats = Seat.objects.prefetch_related('user').filter(layout=layout_id)
     logger.info("座席を取得しました。")
-    return render(request, 'seats/layout_base.html', {'view_type': view_type, 'layout': layout, 'seats': seats})
+    params = {
+        'view_type': view_type,
+        'layout': layout,
+        'seats': seats,
+        }
+    return render(request, 'seats/layout_base.html', params)
 
 
 def sitting(user, layout, seat_id):
@@ -208,4 +234,9 @@ def layout_view(request, layout_id):
     # https://chuna.tech/detail/49/
     seats = Seat.objects.prefetch_related('user').filter(layout=layout_id)
     logger.info("座席を取得しました。")
-    return render(request, 'seats/layout_base.html', {'view_type': view_type, 'layout': layout, 'seats': seats})
+    params = {
+        'view_type': view_type,
+        'layout': layout,
+        'seats': seats,
+        }
+    return render(request, 'seats/layout_base.html', params)

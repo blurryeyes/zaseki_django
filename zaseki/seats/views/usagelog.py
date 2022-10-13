@@ -28,5 +28,8 @@ def usagelog_list(request):
     sitting_time_end = str_to_timezone(request.GET.get('sitting_time_end'))
     if sitting_time_end is not None:
         usagelogs = usagelogs.filter(Q(sit_datetime__lte=sitting_time_end) | ~Q(leave_datetime__gte=sitting_time_end))
-    return render(request, 'seats/usagelog_list.html', {'usagelogs' : usagelogs})
+    params = {
+        'usagelogs' : usagelogs,
+        }
+    return render(request, 'seats/usagelog_list.html', params)
 

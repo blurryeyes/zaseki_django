@@ -26,7 +26,7 @@
         </tr>
     </table>
     {% url 'account_edit' as account_edit_url %}
-    {% bootstrap_button button_type="link" content="編集" href=account_edit_url %}
+    {% bootstrap_button button_class="btn-warning" button_type="link" content="編集" href=account_edit_url %}
     {% if user.is_superuser %}
     {% url 'admin:index' as admin_url %}
     {% bootstrap_button button_type="link" content="管理ページ" href=admin_url target="_blank" %}
