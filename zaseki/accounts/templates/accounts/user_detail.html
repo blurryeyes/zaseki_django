@@ -7,23 +7,23 @@
     <table class="table">
         <tr>
             <th>社員番号</th>
-            <td>{{ user.employee_number }}</td>
+            <td>{{ display_user.employee_number }}</td>
         </tr>
         <tr>
             <th>メールアドレス</th>
-            <td>{{ user.email }}</td>
+            <td>{{ display_user.email }}</td>
         </tr>
         <tr>
             <th>姓</th>
-            <td>{{ user.last_name }}</td>
+            <td>{{ display_user.last_name }}</td>
         </tr>
         <tr>
             <th>名</th>
-            <td>{{ user.first_name }}</td>
+            <td>{{ display_user.first_name }}</td>
         </tr>
         <tr>
             <th>権限</th>
-            <td>{% if user.is_superuser %}管理者{% elif user.is_staff %}スタッフ{% else %}一般{% endif %}</td>
+            <td>{% if display_user.is_superuser %}管理者{% elif display_user.is_staff %}スタッフ{% else %}一般{% endif %}</td>
         </tr>
     </table>
     <br>
@@ -35,6 +35,7 @@
             <th>レイアウト名</th>
             <th>着席日時</th>
             <th>利用時間</th>
+            <th>場所を確認</th>
         </tr>
         {% for usage in usages %}
         <tr>
@@ -42,6 +43,7 @@
             <td><a href="{% url 'layout_detail' usage.seat.layout.id %}">{{ usage.seat.layout.layout_name }}</a></td>
             <td>{{ usage.sit_datetime }}</td>
             <td>{{ usage.sitting_time }}</td>
+            <td><a class="btn btn-sm btn-primary" href="{% url 'seat_locate' usage.seat.id %}">場所を確認する</a></td>
         </tr>
         {% endfor %}
     </table>
@@ -53,6 +55,7 @@
     {% if usagelogs %}
     <table class="table">
         <tr>
+            <th>座席ID</th>
             <th>レイアウト名</th>
             <th>着席日時</th>
             <th>離席日時</th>
@@ -60,6 +63,7 @@
         </tr>
         {% for usagelog in usagelogs %}
         <tr>
+            <td><a href="{% url 'seat_detail' usagelog.seat.id %}">{{ usagelog.seat.id }}</a></td>
             <td><a href="{% url 'layout_detail' usagelog.seat.layout.id %}">{{ usagelog.seat.layout.layout_name }}</a></td>
             <td>{{ usagelog.sit_datetime }}</td>
             <td>{{ usagelog.leave_datetime }}</td>

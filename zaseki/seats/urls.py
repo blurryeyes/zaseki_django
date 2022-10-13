@@ -17,6 +17,7 @@ urlpatterns = [
     # seat
     path('seat/', views.seat.seat_list, name='seat_list'),
     path('seat/<int:seat_id>/', views.seat.seat_detail, name='seat_detail'),
+    path('seat/<int:seat_id>/locate/', views.seat.seat_locate, name='seat_locate'),
 
     # usage
     path('usage/', views.usage.usage_list, name='usage_list'),

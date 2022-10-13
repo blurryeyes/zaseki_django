@@ -50,6 +50,18 @@
             <td><a href="/media/{{ layout.image.name }}"><img src="/media/{{ layout.image.name }}" style="width:300px;border:solid 1px black;"></a></td>
         </tr>
         <tr>
+            <th>座席数</th>
+            <td>{{ seats_count }}</td>
+        </tr>
+        <tr>
+            <th>利用者数</th>
+            <td>{{ usages_count }}</td>
+        </tr>
+        <tr>
+            <th>利用率</th>
+            <td>{{ usage_raito }}%</td>
+        </tr>
+        <tr>
             <th>作成日時</th>
             <td>{{ layout.created_at }}</td>
         </tr>
@@ -67,10 +79,13 @@
         </tr>
     </table>
     {% if user.is_authenticated %}
-    {% url 'layout_edit' layout.id as layout_edit_url %}
-    {% bootstrap_button button_class="btn-primary staff-act" button_type="link" content="編集" href=layout_edit_url %}
+    {% url 'layout_view' layout.id as layout_view_url %}
+    {% bootstrap_button button_class="btn-primary staff-act" button_type="link" content="閲覧" href=layout_view_url %}
+    <a class="btn btn-info" href="{% url 'seat_list' %}?layout_name={{ layout.layout_name }}">座席一覧を確認</a>    
     {% url 'layout_place' layout.id as layout_place_url %}
     {% bootstrap_button button_class="btn-success staff-act" button_type="link" content="座席設置へGO!" href=layout_place_url %}
+    {% url 'layout_edit' layout.id as layout_edit_url %}
+    {% bootstrap_button button_class="btn-warning staff-act" button_type="link" content="編集" href=layout_edit_url %}
     {% url 'layout_delete' layout.id as layout_delete_url %}
     {% bootstrap_button id="layout-delete" button_class="btn-danger staff-act" button_type="link" content="削除" href=layout_delete_url %}
     {% endif %}

@@ -25,6 +25,7 @@
             <th>レイアウト名</th>
             <th>X座標</th>
             <th>Y座標</th>
+            <th>場所を確認</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@
             <td><a href="{% url 'layout_detail' seat.layout.id %}">{{ seat.layout.layout_name }}</a></td>
             <td>{{ seat.x_coordinate }}</td>
             <td>{{ seat.y_coordinate }}</td>
+            <td><a class="btn btn-sm btn-primary" href="{% url 'seat_locate' seat.id %}">場所を確認する</a></td>
         </tr>
         {% endfor %}
         </tbody>

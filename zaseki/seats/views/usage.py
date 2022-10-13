@@ -27,7 +27,10 @@ def usage_list(request):
     sitting_time_end = str_to_timezone(request.GET.get('sitting_time_end'))
     if sitting_time_end is not None:
         usages = usages.filter(sit_datetime__lte=sitting_time_end)
-    return render(request, 'seats/usage_list.html', {'usages' : usages})
+    params = {
+        'usages' : usages,
+        }
+    return render(request, 'seats/usage_list.html', params)
 
 
 @login_required

@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 import logging
 
-from seats.models import Seat, Usage, UsageLog
+from seats.models import Layout, Seat, Usage, UsageLog
 
 logger = logging.getLogger('django')
 
@@ -14,7 +14,10 @@ def seat_list(request):
     layout_name = request.GET.get('layout_name')
     if layout_name is not None:
         seats = seats.filter(layout__layout_name__contains=layout_name)
-    return render(request, 'seats/seat_list.html', {'seats' : seats})
+    params = {
+        'seats' : seats,
+        }
+    return render(request, 'seats/seat_list.html', params)
 
 
 @login_required
@@ -28,3 +31,25 @@ def seat_detail(request, seat_id):
         'usagelogs' : usagelogs,
         }
     return render(request, 'seats/seat_detail.html', params)
+
+
+@login_required
+def seat_locate(request, seat_id):
+    view_type = 'view'
+    logger.info("特定する座席を取得します。")
+    locate_seat = Seat.objects.get(id=seat_id)
+    logger.info("特定する座席を取得しました。")
+    logger.info("レイアウトを取得します。")
+    layout = Layout.objects.get(id=locate_seat.layout.id)
+    logger.info("レイアウトを取得しました。")
+    logger.info("座席を取得します。")
+    # https://chuna.tech/detail/49/
+    seats = Seat.objects.prefetch_related('user').filter(layout=locate_seat.layout.id)
+    logger.info("座席を取得しました。")
+    params = {
+        'view_type': view_type,
+        'layout': layout,
+        'seats': seats,
+        'locate_seat': locate_seat,
+        }
+    return render(request, 'seats/layout_base.html', params)

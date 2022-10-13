@@ -7,6 +7,12 @@
     </div>
     <form class="form-group form-inline input-group-sm">
         <div class="mb-3 row">
+            <label for="searchEmployeeNumber" class="col-md-1 control-label d-flex align-items-center justify-content-center">社員番号</label>
+            <div class="col-md-3">
+                <input id="searchEmployeeNumber" class="form-control" name="employee_number" value="{{ request.GET.employee_number }}" type="text"/>
+            </div>
+        </div>
+        <div class="mb-3 row">
             <label for="searchLastName" class="col-md-1 control-label d-flex align-items-center justify-content-center">姓</label>
             <div class="col-md-3">
                 <input id="searchLastName" class="form-control" name="last_name" value="{{ request.GET.last_name }}" type="text"/>
@@ -32,11 +38,11 @@
         </tr>
         </thead>
         <tbody>
-        {% for user in users %}
+        {% for display_user in users %}
         <tr>
-            <td>{{ user.employee_number }}</td>
-            <td><a class="authenticated-act" href="{% url 'user_detail' user.id %}">{{ user.get_full_name }}</a></td>
-            <td>{% if user.last_login is None %}-{% else %}{{ user.last_login }}{% endif %}</td>
+            <td>{{ display_user.employee_number }}</td>
+            <td><a class="authenticated-act" href="{% url 'user_detail' display_user.id %}">{{ display_user.get_full_name }}</a></td>
+            <td>{% if display_user.last_login is None %}-{% else %}{{ display_user.last_login }}{% endif %}</td>
         </tr>
         {% endfor %}
         </tbody>

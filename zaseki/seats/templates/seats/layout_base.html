@@ -11,9 +11,9 @@
         <div class="panel">{% csrf_token %}
             <img class="seat-area" src="/media/{{ layout.image.name }}" style="width:{{ layout.layout_width }}px; height:{{ layout.layout_height }}px;">
             {% for seat in seats %}{% for user in seat.user.all %}
-                <div class="seat sitting-seat cursor-seat placed-seat" seatid="{{ seat.id }}" style="font-size:{{ layout.font_size }}px;top:{{ seat.y_coordinate }}px;left:{{ seat.x_coordinate }}px;position:absolute;">{{ user.last_name }}</div>    
+                {% if view_type == 'view' %}<a href="{% url 'seat_detail' seat.id %}">{% endif %}<div class="seat sitting-seat cursor-seat placed-seat{% if seat.id == locate_seat.id %} locate-seat{% endif %}" seatid="{{ seat.id }}" style="font-size:{{ layout.font_size }}px;top:{{ seat.y_coordinate }}px;left:{{ seat.x_coordinate }}px;position:absolute;">{{ user.last_name }}</div>{% if view_type == 'view' %}</a>{% endif %}
             {% empty %}
-                <div class="seat non-sitting-seat cursor-seat placed-seat" seatid="{{ seat.id }}" style="font-size:{{ layout.font_size }}px;top:{{ seat.y_coordinate }}px;left:{{ seat.x_coordinate }}px;position:absolute;"></div>
+                {% if view_type == 'view' %}<a href="{% url 'seat_detail' seat.id %}">{% endif %}<div class="seat non-sitting-seat cursor-seat placed-seat{% if seat.id == locate_seat.id %} locate-seat{% endif %}" seatid="{{ seat.id }}" style="font-size:{{ layout.font_size }}px;top:{{ seat.y_coordinate }}px;left:{{ seat.x_coordinate }}px;position:absolute;"></div>{% if view_type == 'view' %}</a>{% endif %}
             {% endfor %}{% endfor %}
             {% if view_type == 'place' %}
             <div class="addition-area">
@@ -236,6 +236,20 @@
     width:{{ layout.seat_width }}px;
     height:{{ layout.seat_height }}px;
     border-radius:10%;
+}
+
+.locate-seat {
+    animation: flash 2s linear infinite;
+}
+
+@keyframes flash {
+    0%,100% {
+      opacity: 1;
+    }
+  
+    50% {
+      opacity: 0.1;
+    }
 }
 </style>
 {% endblock style %}
